@@ -1,6 +1,5 @@
-#include <iostream>
-
-using namespace std;
+#ifndef firstFight_h
+#define firstFight_h
 
 #include <iostream>
 #include <iomanip>
@@ -15,6 +14,7 @@ using namespace std;
 ///Complete the following functions
 ///DO NOT modify any parameters in the functions.
 ////////////////////////////////////////////////////////////////////////
+
 void handle_(int& M, int& HP){
     if (M>1000) M=1000;
     else if (M<0) M=0;
