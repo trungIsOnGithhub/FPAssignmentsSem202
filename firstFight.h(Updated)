@@ -126,8 +126,8 @@ int firstBattle(int& HP1, int& HP2, const int& ID1, const int& ID2, const int& E
     else if (E2>=400 && E2<=499){
         HP1 = ceil(HP1*1.3f);
         HP2 = ceil(HP2*0.8f);
-        HP1 = ceil((float)HP1/2);
         handle_(HP1,HP2);
+        HP1 = ceil((float)HP1/2);
     }
     int ret=0;
     if (ID1 != 0 && ID2 == 0){
