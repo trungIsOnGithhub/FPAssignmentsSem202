@@ -212,3 +212,8 @@ int finalBattle(int& HP1, int& HP2, const int& ID1, const int& ID2, const int& E
     }
     return ret3;
 }
+
+////////////////////////////////////////////////
+///END OF STUDENT'S ANSWER
+////////////////////////////////////////////////
+#endif /* firstFight_h */
