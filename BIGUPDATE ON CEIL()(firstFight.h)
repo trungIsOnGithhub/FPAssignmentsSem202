@@ -152,7 +152,7 @@ int firstBattle(int& HP1, int& HP2, const int& ID1, const int& ID2, const int& E
         else if (HP1 == HP2) ret=0;
         handle_(HP1,HP2);                     //chuyen handle_ xuong sau khi xet thang thua
     }
-    HP1 = ceil((80.0f*HP1)/100);;
+    HP1 = ceil((80.0f*HP1)/100);
     return ret;
 }
 
@@ -160,7 +160,7 @@ int firstBattle(int& HP1, int& HP2, const int& ID1, const int& ID2, const int& E
 int secondBattle(int& HP1, int& HP2, const int& ID1, const int& ID2, const int& E3){
     if (E3<100 || E3>299) return -999;
     int ret2 = 0;
-    HP1 = ceil((140.0f*HP1)/100);;
+    HP1 = ceil((140.0f*HP1)/100);
     HP2 = ceil((160.0f*HP2)/100);
     handle_(HP1,HP2);
     if (ID1==1){
