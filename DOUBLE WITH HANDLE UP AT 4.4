@@ -57,37 +57,6 @@ string decryptIntoChar(string str, int strsize){
     char temp; 
     while (i<strsize){
         if (str[i]>=48 && str[i]<=51){ 
-            if (i==strsize-1 && str[i]==temp){
-                ++i;
-                continue;
-            }
-            temp = str[i]; count = 1;
-            while (i<strsize-1 && str[++i]==temp){
-                ++count;
-            }
-            if (count>7){
-                if (count%7==0) count = 7;
-                else count=count%7;
-            }
-            empty += lookuptab[temp-48][count-1];
-        }
-        else ++i;
-    }
-    return empty;
-}
-
-/* Update ham cuoi
-string decryptIntoChar(string str, int strsize){
-    string lookuptab[4][7] = {{"E","F","G","H","I","J","K"},
-                              {"L","M","N","O","P","Q","R"},
-                              {"#","T","U","V","W","X","Y"},
-                              {"@","A","S","Z","B","C","D"}};
-    string empty = ""; 
-    int count = 0;
-    unsigned int i = 0;
-    char temp; 
-    while (i<strsize){
-        if (str[i]>=48 && str[i]<=51){ 
             if (i==strsize-1 && str[strsize-2]==str[strsize-1]){
                 ++i;
                 continue;
@@ -114,7 +83,89 @@ string decryptIntoChar(string str, int strsize){
     return empty;
 }
 
-*/
+/********** UPDATE DECRYPT INTO CHAR::::
+
+string decryptIntoChar(string str, int strsize){
+    string lookuptab[4][7] = {{"E","F","G","H","I","J","K"},
+                              {"L","M","N","O","P","Q","R"},
+                              {"#","T","U","V","W","X","Y"},
+                              {"@","A","S","Z","B","C","D"}};
+    string empty = ""; 
+    int count = 0,i=0;
+    char temp; 
+    while (i<strsize){
+        if (str[i]>=48 && str[i]<=51){ 
+            if (i==strsize-1 && str[strsize-2]==str[strsize-1]){
+                ++i;
+                continue;
+            }
+            else if (i==strsize-1 && str[strsize-2]!=str[strsize-1]){
+                temp = str[i];
+                empty += lookuptab[temp-48][0];
+                ++i; continue;
+            }
+            else {
+                temp = str[i]; count = 1;
+                while (i<strsize-1 && str[++i]==temp){
+                    ++count;
+                }
+                if (count>7){
+                    if (count%7==0) count = 7;
+                    else count=count%7;
+                }
+                empty += lookuptab[temp-48][count-1];
+                if (temp == '2' && count==1){
+                    empty += '*';
+                }
+            }
+        }
+        else ++i;
+    }
+    int newsize=empty.length();
+    
+	for (int  j = 0; j<newsize; ++j){
+        if (empty[j]=='*'){
+            int idx = j+1;
+            while (idx<newsize){
+                if (empty[idx]=='#' || empty[idx]=='@') break;
+                idx++;
+            }
+            if (idx>j+1){
+                int iter = j;
+                while (iter<idx){
+                    if (iter==idx-1){
+                        if (empty[iter]=='Z') empty[iter] = 'A';
+                        else empty[iter]=empty[iter-1]+1;
+                    }
+                    else empty[iter]=empty[iter+1];
+                    ++iter;
+                }
+            }
+        }
+    }
+    
+    for (int  x = 0; x<newsize; ++x){
+        if (empty[x]=='@'){
+            int checkidx = x+1;
+            while (checkidx<newsize){
+                if (empty[checkidx]=='#' || empty[checkidx]=='@') break;
+                checkidx++;
+            }
+            int temp = checkidx-1;
+            checkidx-=1;
+            for (int x1 = x+1; x1 < checkidx; ++x1){
+                swap(empty[x1], empty[checkidx]);
+                checkidx-=1;
+            }
+            x=temp;
+        }
+    }
+    return empty;
+}
+
+
+**********************************/
+
 
 
 string readyForBattle(const string ID[], const int NID, const string input1[], const int N1)
