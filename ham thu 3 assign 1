@@ -12,6 +12,7 @@ int gcdFinding(int p, int q){
    }
    return ret;
 }
+
 void stringToTheLeft(string& str, int strsize, int dist){
     if (dist==0 || strsize==dist) return;
     int group_num = gcdFinding(strsize,dist);
@@ -30,6 +31,7 @@ void stringToTheLeft(string& str, int strsize, int dist){
         str[curr]=temp;
     }
 }
+
 void stringToTheRight(string& str, int strsize, int dist){
     if (dist==0 || strsize==dist) return;
     int group_num = gcdFinding(strsize,dist);
@@ -47,6 +49,33 @@ void stringToTheRight(string& str, int strsize, int dist){
         }
         str[curr]=temp;
     }
+}
+
+string timToaDo(string str, int N){
+    char uu[4] = {'U','D','L','R'};
+    char dd[4] = {'D','L','R','U'};
+    char ll[4] = {'L','R','D','U'};
+    char rr[4] = {'R','U','D','L'};
+    string ret = "(";
+    int len = str.length(); int det = 0;
+    int x=0; int y=0;
+    
+    for (int i = 0; i<len; ++i){
+        det = abs(N-2*i);
+        det = det%4;
+        if (str[i]=='U') str[i]=uu[det];
+        else if (str[i]=='D') str[i]=dd[det];
+        else if (str[i]=='L') str[i]=ll[det];
+        else str[i]=rr[det];
+    }
+    for (int i = 0; i<len; ++i){
+        if (str[i]=='U') ++y;
+        else if (str[i]=='D') --y;
+        else if (str[i]=='L') --x;
+        else ++x;
+    }
+    ret=ret+to_string(x)+","+to_string(y)+")";
+    return ret;
 }
 
 int main() {
