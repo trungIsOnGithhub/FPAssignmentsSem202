@@ -1,0 +1,62 @@
+#include <iostream>
+
+using namespace std;
+
+int gcdFinding(int p, int q){
+   int ret = 1;
+   for (int i = q; i>1; --i){
+    if (p%i==0 && q%i==0){
+        ret = i;
+        break;
+    }
+   }
+   return ret;
+}
+void stringToTheLeft(string& str, int strsize, int dist){
+    if (dist==0 || strsize==dist) return;
+    int group_num = gcdFinding(strsize,dist);
+    int num_el = strsize/group_num;
+    dist=dist%strsize;   //handle if dist>strsize
+    for (int j = 0; j<group_num; ++j){
+        int temp = str[j];
+        int curr = j;
+        for(;;){
+            int tar = curr + dist;
+            if (tar>=strsize) tar = tar-strsize;
+            if (tar==j) break;
+            str[curr]=str[tar];
+            curr=tar;
+        }
+        str[curr]=temp;
+    }
+}
+void stringToTheRight(string& str, int strsize, int dist){
+    if (dist==0 || strsize==dist) return;
+    int group_num = gcdFinding(strsize,dist);
+    int num_el = strsize/group_num;
+    dist=dist%strsize;   //handle if dist>strsize
+    for (int j = 0; j<group_num; ++j){
+        int temp = str[j];
+        int curr = j;
+        for(;;){
+            int tar = curr - dist;
+            if (tar<0) tar = tar+strsize;
+            if (tar==j) break;
+            str[curr]=str[tar];
+            curr=tar;
+        }
+        str[curr]=temp;
+    }
+}
+
+int main() {
+    string heh = "GeeksforGeeks";
+    int len = heh.length();
+    stringToTheLeft(heh,len,2);
+    cout<<heh<<"\n";
+    heh = "GeeksforGeeks";
+    len = heh.length();
+    stringToTheRight(heh,len,2);
+    cout<<heh;
+    return 0;
+}
