@@ -168,6 +168,47 @@ string decryptIntoChar(string str, int strsize){
 
 
 
+
+string findBetrayals(string arr[], int n5){
+    int traitors[26] = {};
+    int point = 0;
+    int thirdIDX=0; int firstIDX=0;  int secondIDX=0;
+    string ret = "";
+    
+    for (int i = 0; i<n5; ++i){
+        for (int j=0; j<6; ++j){
+            point = 6-j;
+            traitors[(int)str[j]-65]+=point;
+        }
+    }
+
+    for(int i = 0; i<25; ++i){
+        if (traitors[i] > traitors[firstIDX])
+        {
+            thirdIDX = secondIDX;
+            secondIDX = firstIDX;
+            firstIDX = i;
+        }
+        else if (traitors[i] > traitors[secondIDX])
+        {
+            thirdIDX = secondIDX;
+            secondIDX = i;
+        }
+ 
+        else if (traitors[i] > traitors[thirdIDX])
+            thirdIDX = i;
+    }
+    char firstBetray = firstIDX + 65;
+    char secondBetray = secondIDXIDX + 65;
+    char thirdBetray = thirdIDX + 65;
+    ret = ret+firstBetray+secondBetray+thirdBetray;
+    return ret;
+}
+
+
+
+
+
 string readyForBattle(const string ID[], const int NID, const string input1[], const int N1)
 {
     return "You can remove this return";
