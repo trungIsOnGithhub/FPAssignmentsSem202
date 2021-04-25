@@ -2,6 +2,103 @@
 
 using namespace std;
 
+
+**************
+
+int gcdFind(int p, int q){
+    int ret = 1;
+    
+    for (int i = q; i>1; --i){
+        if (p%i==0 && q%i==0){
+            ret = i;
+            break;
+        }
+    }
+    return ret;
+}
+void jugglingRot(string& str,int strsize,int dist){
+    if (dist==strsize) return;
+    
+    int num_group = gcdFind(dist,strsize);
+    
+    for(int j = 0; j < num_group; j++){
+		int next=j+dist;
+        while (next!=j){
+            int temp=str[j];
+			str[j]=str[next];
+			str[next]=temp;
+            next+=dist;
+            if(next>=strsize){
+                next=next-strsize;
+            }
+        }
+    }
+}
+string timToaDo(string str, int N){
+    char uu[4] = {'U','D','L','R'};
+    char dd[4] = {'D','L','R','U'};
+    char ll[4] = {'L','R','U','D'};
+    char rr[4] = {'R','U','D','L'};
+    string ret = "(";
+    int len = str.length(); int det = 0;
+    int x=0; int y=0;
+    
+    for (int i = 0; i<len; ++i){
+        det = abs(N-2*i);
+        det = det%4;
+        if (str[i]=='U') str[i]=uu[det];
+        else if (str[i]=='D') str[i]=dd[det];
+        else if (str[i]=='L') str[i]=ll[det];
+        else str[i]=rr[det];
+    }
+    for (int i = 0; i<len; ++i){
+        if (str[i]=='U') ++y;
+        else if (str[i]=='D') --y;
+        else if (str[i]=='L') --x;
+        else ++x;
+    }
+    ret=ret+to_string(x)+","+to_string(y)+")";
+    return ret;
+}
+
+string findRoute(const string input3){
+    
+    int input3len = input3.length();
+    int count = 0; int prev = 0;
+    int N=0,B=0; string S;
+    
+    for (int i = 0; i<input3len; ++i){
+        if (input3[i]==' '){
+            ++count;
+            if(count==1){ 
+                N=stoi(input3.substr(0,i));
+                prev = i+1;
+            }
+            else if(count==2){
+                B=stoi(input3.substr(prev,i-prev));
+                prev = i+1;
+                S=input3.substr(prev,input3len-prev);
+                break;
+            }
+        }
+    }
+    
+    int lenS = S.length();
+    if (B<0){
+        B=abs(B);
+        if (B>lenS) B=B%lenS;
+        jugglingRot(S,lenS,lenS-B);
+    }
+    else if (B>0){
+        if (B>lenS) B=B%lenS;
+        jugglingRot(S,lenS,B);
+    }
+    return timToaDo(S,N);;
+}
+
+
+***********TEST 25/4
+
 int gcdFinding(int p, int q){
    int ret = 1;
    for (int i = q; i>1; --i){
@@ -48,6 +145,38 @@ void stringToTheRight(string& str, int strsize, int dist){
             curr=tar;
         }
         str[curr]=temp;
+    }
+}
+
+
+//Update 25/04 **************
+
+
+int gcdFind(int p, int q){
+    int ret = 1;
+    
+    for (int i = q; i>1; --i){
+        if (p%i==0 && q%i==0){
+            ret = i;
+            break;
+        }
+    }
+    return ret;
+}
+void jugglingRot(string& str,int strsize,int dist){
+    int num_group = gcdFind(dist,strsize);
+    
+    for(int j = 0; j < num_group; j++){
+		int next=j+dist;
+        while (next!=j){
+            int temp=str[j];
+			str[j]=str[next];
+			str[next]=temp;
+            next+=dist;
+            if(next>=strsize){
+                next=next-strsize;
+            }
+        }
     }
 }
 
