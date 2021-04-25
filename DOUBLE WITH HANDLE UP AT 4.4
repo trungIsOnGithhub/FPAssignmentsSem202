@@ -211,6 +211,7 @@ string timPhanBoi(const string arr[], const int n5){
     int traitors[26] = {};
     int point = 0;
     int maxIDX=0;
+    int maxpoint=0;
     string treasons = "";
     
     for (int i = 0; i<n5; ++i){
@@ -221,7 +222,7 @@ string timPhanBoi(const string arr[], const int n5){
     }
 
     for (int i = 0; i<3; ++i){
-        int maxpoint = traitors[0];
+        maxpoint = 0;
         for (int j = 0; j<25; ++j){
             if (traitors[j]>maxpoint){
                 maxpoint=traitors[j];
