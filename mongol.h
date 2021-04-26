@@ -19,7 +19,12 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 ////////////////////////////////////////////////////////////////////////////
 
 
-
+void swap(char &a,char &b){
+    char temp;
+    temp=a;
+    a=b;
+    b=temp;
+}
 void unwantedChar1(string& str, int strsize){
     for (unsigned int  i = 0; i<str.length(); ++i){
         if (str[i]=='#' || str[i]=='@' || str[i]=='*'){
