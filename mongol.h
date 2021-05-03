@@ -497,7 +497,7 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 		temp_ptr =a;
         a = c;
         c=temp_ptr;
-		R = modulo(a[index1 - 1][index2 - 1],V);
+		R = modulo(a[index1][index2],V);
 	}
 	else if (k >= 3)
 	{
@@ -508,14 +508,7 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
             a = c;
             c=temp_ptr;
 		}
-		R = modulo(a[index1 - 1][index2 - 1],V);
-	}
-	
-	for (int i = 0; i < N7; i++){
-       for (int j = 0; j < N7; j++){
-          cout << a[i][j] << " ";
-       }
-        cout<<endl;
+		R = modulo(a[index1][index2],V);
 	}
 	
 	for (int i = 0; i < N7; i++) delete[] b[i];
