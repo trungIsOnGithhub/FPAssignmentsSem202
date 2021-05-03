@@ -412,9 +412,121 @@ int attack(const string input6[]){
 }
 
 
-int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k)
-{
-    return -1;
+
+int modulo(int a, int b) {
+  return (((a % b) + b) % b);
 }
+
+void NhanMaTran(int** mat1, int** mat2, int** result, int n) {
+	int i,j,k;
+	
+	for (i = 0; i < n; i++){
+		for (j = 0; j < n; j++){
+		    result[i][j]=0;
+			for (k = 0; k < n; k++){
+				result[i][j] += mat1[i][k] * mat2[k][j];
+			}
+		}
+	}
+}
+
+// only apply for square matrix
+
+void stringProcessing(string str, int** result){
+	int strsize = str.size(); int num_el = 0,temp=0;
+	int mat_size=0;
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ') ++num_el;
+	}
+	++num_el; mat_size = sqrt(num_el);
+	
+	string* string_arr = new string[num_el];
+
+	for (int i = 0;i<strsize; i++){
+		if (str[i]==' ')  ++temp;
+		else if (str[i]!=' '){
+		    string_arr[temp]+=str[i];
+		}
+	}
+	
+	for (int i = 0; i<num_el;++i){
+		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
+	}
+	
+	delete[] string_arr;
+	
+}
+
+
+int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
+	int strsize = input7Str.size();
+	string input_stored[4];
+	int iter1=0,start=0;  int R=0;
+	int N7=0,V=0,index1=0,index2=0;
+	int** temp_ptr;
+	
+	for (int i = 0; i<strsize; i++){
+		if (input7Str[i]==' '){
+		    input_stored[iter1]=input7Str.substr(start,i-start);
+		    ++iter1;
+		    start=i+1;
+	    }
+	    if (iter1==3){
+	        input_stored[iter1]=input7Str.substr(start,strsize-start);
+	    }
+	}
+	
+	N7 = stoi(input_stored[0]);
+	V = stoi(input_stored[1]);
+	index1 = stoi(input_stored[2]);
+	index2 = stoi(input_stored[3]);
+	
+	int** a = new int* [N7];
+	for (int i = 0; i < N7; i++) a[i] = new int[N7];
+	int** b = new int* [N7];
+	for (int i = 0; i < N7; i++) b[i] = new int[N7];
+	int** c = new int* [N7]; 
+	for (int i = 0; i < N7; i++) c[i] = new int[N7];
+	
+	stringProcessing(input7Matrix[0], a); 
+	if (k == 2) 
+	{
+		stringProcessing(input7Matrix[1], b);
+		NhanMaTran(a, b, c, N7);
+		temp_ptr =a;
+        a = c;
+        c=temp_ptr;
+		R = modulo(a[index1 - 1][index2 - 1],V);
+	}
+	else if (k >= 3)
+	{
+		for (int i = 1; i < k; i++) {
+			stringProcessing(input7Matrix[i], b); 
+			NhanMaTran(a, b, c, N7); 
+			temp_ptr =a;
+            a = c;
+            c=temp_ptr;
+		}
+		R = modulo(a[index1 - 1][index2 - 1],V);
+	}
+	
+	for (int i = 0; i < N7; i++){
+       for (int j = 0; j < N7; j++){
+          cout << a[i][j] << " ";
+       }
+        cout<<endl;
+	}
+	
+	for (int i = 0; i < N7; i++) delete[] b[i];
+	delete[] b;
+	for (int i = 0; i < N7; i++) delete[] a[i];
+	delete[] a;
+	for (int i = 0; i < N7; i++) delete[] c[i];
+	delete[] c;
+	
+	return R;
+}
+
 
 #endif /* MONGOL_H */
