@@ -620,4 +620,120 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 	return R;
 }
 
+
+//Sua lai chut xiu.
+
+
+int modulo(int a, int b) {
+  return (((a % b) + b) % b);
+}
+
+void matrixMultiply(int** mat1, int** mat2, int** result, int n) {
+	int i,j,k;
+	
+	for (i = 0; i < n;++i){
+		for (j = 0; j < n;++j){
+		    result[i][j]=0;
+			for (k = 0; k < n;++k){
+				result[i][j] += mat1[i][k] * mat2[k][j];
+			}
+		}
+	}
+}
+
+void stringProcessing(string str, int** result){
+	int strsize = str.size(); int num_el = 0,temp=0;
+	int mat_size=0;
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ') ++num_el;
+	}
+	
+	++num_el; mat_size = sqrt(num_el);
+	
+	string* string_arr = new string[num_el];
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ')  ++temp;
+		else if (str[i]!=' '){
+		    string_arr[temp]+=str[i];
+		}
+	}
+	
+	for (int i = 0; i<num_el;++i){
+		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
+	}
+	
+	delete[] string_arr;
+	
+}
+
+
+int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
+	int strsize = input7Str.size();
+	string input_stored[4];
+	int iter1=0,start=0;  int ret=0;
+	int N7=0,V=0,index1=0,index2=0;
+	int** temp_ptr;
+	
+	for (int i = 0; i<strsize;++i){
+		if (input7Str[i]==' '){
+		    input_stored[iter1]=input7Str.substr(start,i-start);
+		    ++iter1;
+		    start=i+1;
+	    }
+	    if (iter1==3){
+	        input_stored[iter1]=input7Str.substr(start,strsize-start);
+	    }
+	}
+	
+	N7 = stoi(input_stored[0]);
+	V = stoi(input_stored[1]);
+	index1 = stoi(input_stored[2]);
+	index2 = stoi(input_stored[3]);
+	
+	int** mat1 = new int* [N7];
+	for (int i = 0; i < N7;++i){
+	    mat1[i] = new int[N7];
+	} 
+	
+	int** mat2 = new int* [N7];
+	for (int i = 0; i < N7;++i){ 
+	    mat2[i] = new int[N7];
+	}
+	
+	int** mat3 = new int* [N7]; 
+	for (int i = 0; i < N7;++i){ 
+	    mat3[i] = new int[N7];
+	}
+	
+	stringProcessing(input7Matrix[0],mat1);	
+
+	for (int i = 1; i < k;++i) {
+		stringProcessing(input7Matrix[i],mat2); 
+		matrixMultiply(mat1,mat2,mat3, N7); 
+		temp_ptr=mat1;
+        	mat1=mat3;
+        	mat3=temp_ptr;
+	}
+	ret = mat1[index1][index2]%V; //CO the se chua lai.
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat1[i];
+	}
+	delete[] mat1;
+	
+	for (int i = 0; i < N7;++i){
+	    delete[] mat2[i];
+	} 
+	delete[] mat2;
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat3[i];
+	}
+	delete[] mat3;
+	
+	return ret;
+}
+
 #endif /* MONGOL_H */
