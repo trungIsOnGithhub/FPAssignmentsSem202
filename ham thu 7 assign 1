@@ -1,0 +1,250 @@
+//get the right mod
+int modulos(int a, int b){
+  return (((a % b) + b) % b);
+}
+
+
+//For the square matrix only
+void stringProcessing(string str, int** result){
+	int strsize = str.size(); int num_el = 0,temp=0;
+	int mat_size=0;
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ') ++num_el;
+	}
+	
+	++num_el; mat_size = sqrt(num_el);
+	
+	string* string_arr = new string[num_el];
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ')  ++temp;
+		else if (str[i]!=' '){
+		    string_arr[temp]+=str[i];
+		}
+	}
+	
+	for (int i = 0; i<num_el;++i){
+		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
+	}
+	
+	delete[] string_arr;
+	
+}
+
+
+void specialMatrixMultiply(int** mat1, int** mat2, int** result, int V, int n){
+	int i,j,k;
+	
+	for (i = 0; i < n;++i){
+		for (j = 0; j < n;++j){
+			for (k = 0; k < n;++k){
+				result[i][j] += (mat1[i][k]%V)*(mat2[k][j]%V);
+			}
+		}
+	}
+}
+
+
+int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
+	int strsize = input7Str.size();
+	string input_stored[4];
+	int iter1=0,start=0;  int ret=0;
+	int N7=0,V=0,index1=0,index2=0;
+	
+	for (int i = 0; i<strsize;++i){
+		if (input7Str[i]==' '){
+		    input_stored[iter1]=input7Str.substr(start,i-start);
+		    ++iter1;
+		    start=i+1;
+	    }
+	    if (iter1==3){
+	        input_stored[iter1]=input7Str.substr(start,strsize-start);
+	    }
+	}
+	
+	N7 = stoi(input_stored[0]);
+	V = stoi(input_stored[1]);
+	index1 = stoi(input_stored[2]);
+	index2 = stoi(input_stored[3]);
+	
+	if (N7==0) return 0;
+	
+	int** mat1 = new int* [N7];
+	for (int i = 0; i < N7;++i){
+	    mat1[i] = new int[N7];
+	} 
+	
+	int** mat2 = new int* [N7];
+	for (int i = 0; i < N7;++i){ 
+	    mat2[i] = new int[N7];
+	}
+	
+	int** mat3 = new int* [N7]; 
+	for (int i = 0; i < N7;++i){ 
+	    mat3[i] = new int[N7];
+	}
+	
+	stringProcessing(input7Matrix[0],mat1);	
+
+	for (int i = 1; i<k;++i) {
+		stringProcessing(input7Matrix[i],mat2); 
+		specialMatrixMultiply(mat1,mat2,mat3,V,N7); 
+		for (int x=0;x<N7;++x){
+		    for(int j=0;j<N7;++j){
+		        mat1[x][j]=mat3[x][j];
+		        mat3[x][j]=0;
+		    }
+		}
+	}
+	
+	ret = modulos(mat1[index1][index2],V); //CO the se chua lai.
+	
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat1[i];
+	}
+	delete[] mat1;
+	
+	for (int i = 0; i < N7;++i){
+	    delete[] mat2[i];
+	} 
+	delete[] mat2;
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat3[i];
+	}
+	delete[] mat3;
+	
+	return ret;
+}
+
+
+
+
+
+\\XAI LONG CHO SO KHOI TO
+
+
+//get the right mod
+
+int modulos(long a, long b){
+  return (int)(((a % b) + b) % b);
+}
+
+
+//For the square matrix only
+void stringProcessing(string str, long** result){
+	int strsize = str.size(); int num_el = 0,temp=0;
+	int mat_size=0;
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ') ++num_el;
+	}
+	
+	++num_el; mat_size = sqrt(num_el);
+	
+	string* string_arr = new string[num_el];
+
+	for (int i = 0;i<strsize;++i){
+		if (str[i]==' ')  ++temp;
+		else if (str[i]!=' '){
+		    string_arr[temp]+=str[i];
+		}
+	}
+	
+	for (int i = 0; i<num_el;++i){
+		result[i/mat_size][i%mat_size] = stol(string_arr[i]);
+	}
+	
+	delete[] string_arr;
+	
+}
+
+
+void specialMatrixMultiply(long** mat1, long** mat2, long** result, int V, int n){
+	int i,j,k;
+	
+	for (i = 0; i < n;++i){
+		for (j = 0; j < n;++j){
+			for (k = 0; k < n;++k){
+				result[i][j] += (mat1[i][k]%V)*(mat2[k][j]%V);
+			}
+		}
+	}
+}
+
+
+int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
+	int strsize = input7Str.size();
+	string input_stored[4];
+	int iter1=0,start=0;  int ret=0;
+	int N7=0,V=0,index1=0,index2=0;
+	
+	for (int i = 0; i<strsize;++i){
+		if (input7Str[i]==' '){
+		    input_stored[iter1]=input7Str.substr(start,i-start);
+		    ++iter1;
+		    start=i+1;
+	    }
+	    if (iter1==3){
+	        input_stored[iter1]=input7Str.substr(start,strsize-start);
+	    }
+	}
+	
+	N7 = stoi(input_stored[0]);
+	V = stoi(input_stored[1]);
+	index1 = stoi(input_stored[2]);
+	index2 = stoi(input_stored[3]);
+	
+	if (N7==0) return 0;
+	
+	long** mat1 = new long* [N7];
+	for (int i = 0; i < N7;++i){
+	    mat1[i] = new long[N7];
+	} 
+	
+	long** mat2 = new long* [N7];
+	for (int i = 0; i < N7;++i){ 
+	    mat2[i] = new long[N7];
+	}
+	
+	long** mat3 = new long* [N7]; 
+	for (int i = 0; i < N7;++i){ 
+	    mat3[i] = new long[N7];
+	}
+	
+	stringProcessing(input7Matrix[0],mat1);	
+
+	for (int i = 1; i<k;++i) {
+		stringProcessing(input7Matrix[i],mat2); 
+		specialMatrixMultiply(mat1,mat2,mat3,V,N7); 
+		for (int x=0;x<N7;++x){
+		    for(int j=0;j<N7;++j){
+		        mat1[x][j]=mat3[x][j];
+		        mat3[x][j]=0;
+		    }
+		}
+	}
+	
+	ret = modulos(mat1[index1][index2],V); //CO the se chua lai.
+	
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat1[i];
+	}
+	delete[] mat1;
+	
+	for (int i = 0; i < N7;++i){
+	    delete[] mat2[i];
+	} 
+	delete[] mat2;
+	
+	for (int i = 0; i < N7;++i){ 
+	    delete[] mat3[i];
+	}
+	delete[] mat3;
+	
+	return ret;
+}
+
