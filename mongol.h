@@ -13,6 +13,21 @@ string decodeVfunction(const string A, const string B);
 string findBetrayals(const string input5[], const int N5);
 int attack(const string input6[]);
 int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k);
+void swap(char &a,char &b);
+void unwantedChar1(string& str);
+string decryptBinary(string str, int strsize);
+string decryptIntoChar(string str, int strsize);
+string treatingInputWithVUA(string str, int strsize);
+void quickSortWithString(string& str, int start, int end);
+void treatingInputWithTHD(string& str, int strsize);
+int gcdFind(int p, int q);
+void jugglingRot(string& str,int strsize,int dist);
+string ordinate(string str, int N);
+int countV(string str);
+int modulos( long long int a,  int b);
+void stringProcessing(string str,  long long int** result);
+void specialMatrixMultiply( long long int** mat1,  long long int** mat2,  long long int** result, int V, int n);
+//just to avoid warning -Wmissing declaration
 
 ////////////////////////////////////////////////////////////////////////////
 /// STUDENT'S ANSWER HERE
@@ -25,7 +40,8 @@ void swap(char &a,char &b){
     a=b;
     b=temp;
 }
-void unwantedChar1(string& str, int strsize){
+
+void unwantedChar1(string& str){
     for (unsigned int  i = 0; i<str.length(); ++i){
         if (str[i]=='#' || str[i]=='@' || str[i]=='*'){
             str.erase(str.begin()+i);
@@ -36,13 +52,13 @@ void unwantedChar1(string& str, int strsize){
 
 string decryptBinary(string str, int strsize){
     string empty = "";
-    unsigned int i = 0;
+    int i = 0;
     while (i<strsize){
         if (str[i]==' '){
             ++i;
             empty += " ";
             continue;
-        } 
+        }
         else if (str[i]=='0'){
             ++i;
             if (str[i]=='0') empty += "0";
@@ -64,11 +80,11 @@ string decryptIntoChar(string str, int strsize){
                               {"L","M","N","O","P","Q","R"},
                               {"#","T","U","V","W","X","Y"},
                               {"@","A","S","Z","B","C","D"}};
-    string empty = ""; 
+    string empty = "";
     int count = 0,i=0;
-    char temp; 
+    char temp;
     while (i<strsize){
-        if (str[i]>=48 && str[i]<=51){ 
+        if (str[i]>=48 && str[i]<=51){
             if (i==strsize-1 && str[strsize-2]==str[strsize-1]){
                 ++i;
                 continue;
@@ -95,9 +111,10 @@ string decryptIntoChar(string str, int strsize){
         }
         else ++i;
     }
+
     int newsize=empty.length();
-    
-	for (int  j = 0; j<newsize; ++j){
+
+    for (int  j = 0; j<newsize; ++j){
         if (empty[j]=='*'){
             int idx = j+1;
             while (idx<newsize){
@@ -117,7 +134,7 @@ string decryptIntoChar(string str, int strsize){
             }
         }
     }
-    
+
     for (int  x = 0; x<newsize; ++x){
         if (empty[x]=='@'){
             int checkidx = x+1;
@@ -125,13 +142,13 @@ string decryptIntoChar(string str, int strsize){
                 if (empty[checkidx]=='#' || empty[checkidx]=='@') break;
                 checkidx++;
             }
-            int temp = checkidx-1;
+            int temp1 = checkidx-1;
             checkidx-=1;
             for (int x1 = x+1; x1 < checkidx; ++x1){
                 swap(empty[x1], empty[checkidx]);
                 checkidx-=1;
             }
-            x=temp;
+            x=temp1;
         }
     }
     return empty;
@@ -189,41 +206,43 @@ string readyForBattle(const string ID[], const int NID, const string input1[], c
     for (int j = 0;j<NID; ++j){
         size_t tuong = ID[j].find("THD");
         size_t vua = ID[j].find("VUA");
-        int dodai = ID[j].length();
+        unsigned int dodai = ID[j].length();
         dodai-=3;
-        if (vua!=string::npos && vua==0){
+        unsigned int firstpos = 0;
+
+        if (vua!=string::npos && vua==firstpos){
             vua2tuong1quan0 = 2;
             break;
         }
-        if (tuong!=string::npos && tuong>0 && tuong<dodai){
+        if (tuong!=string::npos && tuong>firstpos && tuong<dodai){
             vua2tuong1quan0 = 1;
             break;
         }
     }
-    
+
     string trave = "";
     int strsize = 0;
     for (int i = 0; i<N1; ++i){
         string dupli = input1[i];
-        
+
         strsize = dupli.length();
         dupli=decryptBinary(dupli,strsize);
-        
+
         strsize = dupli.length();
         dupli=decryptIntoChar(dupli,strsize);
-        
+
         strsize = dupli.length();
-        unwantedChar1(dupli,strsize);
-        
+        unwantedChar1(dupli);
+
         strsize = dupli.length();
-        
+
         if (vua2tuong1quan0==1){
             treatingInputWithTHD(dupli,strsize);
         }
         else if (vua2tuong1quan0==2){
             dupli=treatingInputWithVUA(dupli,strsize);
         }
-        
+
         trave += dupli;
         if (i!=N1-1) trave += " ";
     }
@@ -244,7 +263,7 @@ int decode(const string str, const string pattern){
 
 int gcdFind(int p, int q){
     int ret = 1;
-    
+
     for (int i = q; i>1; --i){
         if (p%i==0 && q%i==0){
             ret = i;
@@ -255,15 +274,15 @@ int gcdFind(int p, int q){
 }
 void jugglingRot(string& str,int strsize,int dist){
     if (dist==strsize) return;
-    
+
     int num_group = gcdFind(dist,strsize);
-    
+
     for(int j = 0; j < num_group; j++){
 	int next=j+dist;
         while (next!=j){
             int temp=str[j];
-			str[j]=str[next];
-			str[next]=temp;
+	    str[j]=str[next];
+	    str[next]=temp;
             next+=dist;
             if(next>=strsize){
                 next=next-strsize;
@@ -279,7 +298,7 @@ string ordinate(string str, int N){
     string ret = "(";
     int len = str.length(); int det = 0;
     int x=0; int y=0;
-    
+
     for (int i = 0; i<len; ++i){
         det = abs(N-2*i);
         det = det%4;
@@ -298,15 +317,15 @@ string ordinate(string str, int N){
     return ret;
 }
 string findRoute(const string input3){
-    
+
     int input3len = input3.length();
     int count = 0; int prev = 0;
     int N=0,B=0; string S;
-    
+
     for (int i = 0; i<input3len; ++i){
         if (input3[i]==' '){
             ++count;
-            if(count==1){ 
+            if(count==1){
                 N=stoi(input3.substr(0,i));
                 prev = i+1;
             }
@@ -318,7 +337,7 @@ string findRoute(const string input3){
             }
         }
     }
-    
+
     int lenS = S.length();
     if (B<0){
         B=abs(B);
@@ -361,7 +380,7 @@ string findBetrayals(const string input5[], const int N5){
     int maxIDX=0;
     int maxpoint=0;
     string treasons = "";
-    
+
     for (int i = 0; i<N5; ++i){
         for (int j=0; j<6; ++j){
             point = 6-j;
@@ -381,7 +400,7 @@ string findBetrayals(const string input5[], const int N5){
         treasons=treasons+betrayal;
         traitors[maxIDX]=-1;
     }
-   
+
     return treasons;
 }
 
@@ -389,10 +408,10 @@ string findBetrayals(const string input5[], const int N5){
 int attack(const string input6[]){
     int weakness[10] = {};
     int minp=11; int minrow=0; int ret = -1;
-    
+
     for(int i=0; i<10; ++i){
-        for(int j =0; j<input6[i].length();++j){
-            if(input6[i][j]=='1') 
+        for(unsigned int j =0; j<input6[i].length();++j){
+            if(input6[i][j]=='1')
                 weakness[i]+=1;
             else if(input6[i][j]=='2'){
                 weakness[i]=99;
@@ -400,7 +419,7 @@ int attack(const string input6[]){
             }
         }
     }
-    
+
     for (int i=9; i>=0;--i){
         if (weakness[i]<minp){
             minp= weakness[i];
@@ -413,37 +432,27 @@ int attack(const string input6[]){
 
 
 
-int modulo(int a, int b) {
-  return (((a % b) + b) % b);
+//get the right mod
+
+int modulos( long long int a,  int b){
+  return (int)(((a % b) + b) % b);
 }
 
-void NhanMaTran(int** mat1, int** mat2, int** result, int n) {
-	int i,j,k;
-	
-	for (i = 0; i < n; i++){
-		for (j = 0; j < n; j++){
-		    result[i][j]=0;
-			for (k = 0; k < n; k++){
-				result[i][j] += mat1[i][k] * mat2[k][j];
-			}
-		}
-	}
-}
 
-// only apply for square matrix
-
-void stringProcessing(string str, int** result){
+//For the square matrix only
+void stringProcessing(string str,  long long int** result){
 	int strsize = str.size(); int num_el = 0,temp=0;
 	int mat_size=0;
 
 	for (int i = 0;i<strsize;++i){
 		if (str[i]==' ') ++num_el;
 	}
+	
 	++num_el; mat_size = sqrt(num_el);
 	
 	string* string_arr = new string[num_el];
 
-	for (int i = 0;i<strsize; i++){
+	for (int i = 0;i<strsize;++i){
 		if (str[i]==' ')  ++temp;
 		else if (str[i]!=' '){
 		    string_arr[temp]+=str[i];
@@ -451,7 +460,7 @@ void stringProcessing(string str, int** result){
 	}
 	
 	for (int i = 0; i<num_el;++i){
-		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
+		result[i/mat_size][i%mat_size] = stoll(string_arr[i]);
 	}
 	
 	delete[] string_arr;
@@ -459,213 +468,16 @@ void stringProcessing(string str, int** result){
 }
 
 
-int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
-	int strsize = input7Str.size();
-	string input_stored[4];
-	int iter1=0,start=0;  int R=0;
-	int N7=0,V=0,index1=0,index2=0;
-	int** temp_ptr;
-	
-	for (int i = 0; i<strsize; i++){
-		if (input7Str[i]==' '){
-		    input_stored[iter1]=input7Str.substr(start,i-start);
-		    ++iter1;
-		    start=i+1;
-	    }
-	    if (iter1==3){
-	        input_stored[iter1]=input7Str.substr(start,strsize-start);
-	    }
-	}
-	
-	N7 = stoi(input_stored[0]);
-	V = stoi(input_stored[1]);
-	index1 = stoi(input_stored[2]);
-	index2 = stoi(input_stored[3]);
-	
-	int** a = new int* [N7];
-	for (int i = 0; i < N7; i++) a[i] = new int[N7];
-	int** b = new int* [N7];
-	for (int i = 0; i < N7; i++) b[i] = new int[N7];
-	int** c = new int* [N7]; 
-	for (int i = 0; i < N7; i++) c[i] = new int[N7];
-	
-	stringProcessing(input7Matrix[0], a); 
-	if (k == 2) 
-	{
-		stringProcessing(input7Matrix[1], b);
-		NhanMaTran(a, b, c, N7);
-		temp_ptr =a;
-        a = c;
-        c=temp_ptr;
-		R = modulo(a[index1][index2],V);
-	}
-	else if (k >= 3)
-	{
-		for (int i = 1; i < k; i++) {
-			stringProcessing(input7Matrix[i], b); 
-			NhanMaTran(a, b, c, N7); 
-			temp_ptr =a;
-            a = c;
-            c=temp_ptr;
-		}
-		R = modulo(a[index1][index2],V);
-	}
-	
-	for (int i = 0; i < N7; i++) delete[] b[i];
-	delete[] b;
-	for (int i = 0; i < N7; i++) delete[] a[i];
-	delete[] a;
-	for (int i = 0; i < N7; i++) delete[] c[i];
-	delete[] c;
-	
-	return R;
-}
-
-//Update ham 7
-
-int modulo(int a, int b) {
-  return (((a % b) + b) % b);
-}
-
-void NhanMaTran(int** mat1, int** mat2, int** result, int n) {
-	int i,j,k;
-	
-	for (i = 0; i < n; i++){
-		for (j = 0; j < n; j++){
-		    result[i][j]=0;
-			for (k = 0; k < n; k++){
-				result[i][j] += mat1[i][k] * mat2[k][j];
-			}
-		}
-	}
-}
-
-// only apply for square matrix
-
-void stringProcessing(string str, int** result){
-	int strsize = str.size(); int num_el = 0,temp=0;
-	int mat_size=0;
-
-	for (int i = 0;i<strsize;++i){
-		if (str[i]==' ') ++num_el;
-	}
-	++num_el; mat_size = sqrt(num_el);
-	
-	string* string_arr = new string[num_el];
-
-	for (int i = 0;i<strsize; i++){
-		if (str[i]==' ')  ++temp;
-		else if (str[i]!=' '){
-		    string_arr[temp]+=str[i];
-		}
-	}
-	
-	for (int i = 0; i<num_el;++i){
-		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
-	}
-	
-	delete[] string_arr;
-	
-}
-
-
-int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[], const int k){
-	int strsize = input7Str.size();
-	string input_stored[4];
-	int iter1=0,start=0;  int R=0;
-	int N7=0,V=0,index1=0,index2=0;
-	int** temp_ptr;
-	
-	for (int i = 0; i<strsize; i++){
-		if (input7Str[i]==' '){
-		    input_stored[iter1]=input7Str.substr(start,i-start);
-		    ++iter1;
-		    start=i+1;
-	    }
-	    if (iter1==3){
-	        input_stored[iter1]=input7Str.substr(start,strsize-start);
-	    }
-	}
-	
-	N7 = stoi(input_stored[0]);
-	V = stoi(input_stored[1]);
-	index1 = stoi(input_stored[2]);
-	index2 = stoi(input_stored[3]);
-	
-	int** a = new int* [N7];
-	for (int i = 0; i < N7; i++) a[i] = new int[N7];
-	int** b = new int* [N7];
-	for (int i = 0; i < N7; i++) b[i] = new int[N7];
-	int** c = new int* [N7]; 
-	for (int i = 0; i < N7; i++) c[i] = new int[N7];
-	
-	stringProcessing(input7Matrix[0], a);	
-
-	for (int i = 1; i < k; i++) {
-		stringProcessing(input7Matrix[i], b); 
-		NhanMaTran(a, b, c, N7); 
-		temp_ptr =a;
-        	a = c;
-        	c=temp_ptr;
-	}
-	R = modulo(a[index1][index2],V);
-	
-	for (int i = 0; i < N7; i++) delete[] b[i];
-	delete[] b;
-	for (int i = 0; i < N7; i++) delete[] a[i];
-	delete[] a;
-	for (int i = 0; i < N7; i++) delete[] c[i];
-	delete[] c;
-	
-	return R;
-}
-
-
-//Sua lai chut xiu.
-
-
-int modulo(int a, int b) {
-  return (((a % b) + b) % b);
-}
-
-void matrixMultiply(int** mat1, int** mat2, int** result, int n) {
+void specialMatrixMultiply( long long int** mat1,  long long int** mat2,  long long int** result, int V, int n){
 	int i,j,k;
 	
 	for (i = 0; i < n;++i){
 		for (j = 0; j < n;++j){
-		    result[i][j]=0;
 			for (k = 0; k < n;++k){
-				result[i][j] += mat1[i][k] * mat2[k][j];
+				result[i][j] += (mat1[i][k]%V)*(mat2[k][j]%V);
 			}
 		}
 	}
-}
-
-void stringProcessing(string str, int** result){
-	int strsize = str.size(); int num_el = 0,temp=0;
-	int mat_size=0;
-
-	for (int i = 0;i<strsize;++i){
-		if (str[i]==' ') ++num_el;
-	}
-	
-	++num_el; mat_size = sqrt(num_el);
-	
-	string* string_arr = new string[num_el];
-
-	for (int i = 0;i<strsize;++i){
-		if (str[i]==' ')  ++temp;
-		else if (str[i]!=' '){
-		    string_arr[temp]+=str[i];
-		}
-	}
-	
-	for (int i = 0; i<num_el;++i){
-		result[i/mat_size][i%mat_size] = stoi(string_arr[i]);
-	}
-	
-	delete[] string_arr;
-	
 }
 
 
@@ -674,7 +486,6 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 	string input_stored[4];
 	int iter1=0,start=0;  int ret=0;
 	int N7=0,V=0,index1=0,index2=0;
-	int** temp_ptr;
 	
 	for (int i = 0; i<strsize;++i){
 		if (input7Str[i]==' '){
@@ -692,31 +503,38 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 	index1 = stoi(input_stored[2]);
 	index2 = stoi(input_stored[3]);
 	
-	int** mat1 = new int* [N7];
+	if (N7==0) return 0;
+	
+	 long long int** mat1 = new  long long int* [N7];
 	for (int i = 0; i < N7;++i){
-	    mat1[i] = new int[N7];
+	    mat1[i] = new  long long int[N7];
 	} 
 	
-	int** mat2 = new int* [N7];
+	 long long int** mat2 = new  long long int* [N7];
 	for (int i = 0; i < N7;++i){ 
-	    mat2[i] = new int[N7];
+	    mat2[i] = new  long long int[N7];
 	}
 	
-	int** mat3 = new int* [N7]; 
+	 long long int** mat3 = new  long long int* [N7]; 
 	for (int i = 0; i < N7;++i){ 
-	    mat3[i] = new int[N7];
+	    mat3[i] = new  long long int[N7];
 	}
 	
 	stringProcessing(input7Matrix[0],mat1);	
 
-	for (int i = 1; i < k;++i) {
+	for (int i = 1; i<k;++i) {
 		stringProcessing(input7Matrix[i],mat2); 
-		matrixMultiply(mat1,mat2,mat3, N7); 
-		temp_ptr=mat1;
-        	mat1=mat3;
-        	mat3=temp_ptr;
+		specialMatrixMultiply(mat1,mat2,mat3,V,N7); 
+		for (int x=0;x<N7;++x){
+		    for(int j=0;j<N7;++j){
+		        mat1[x][j]=mat3[x][j];
+		        mat3[x][j]=0;
+		    }
+		}
 	}
-	ret = mat1[index1][index2]%V; //CO the se chua lai.
+	
+	ret = modulos(mat1[index1][index2],V); //CO the se chua lai.
+	
 	
 	for (int i = 0; i < N7;++i){ 
 	    delete[] mat1[i];
@@ -735,5 +553,6 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 	
 	return ret;
 }
+//not sure 100% the task 7 but that's what i can do.
 
 #endif /* MONGOL_H */
