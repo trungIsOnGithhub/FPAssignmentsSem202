@@ -123,18 +123,18 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 
 
 
-\\XAI LONG CHO SO KHOI TO
+//XAI LONG LONG CHO SO KHOI TO
 
 
 //get the right mod
 
-int modulos(long a, long b){
+int modulos( long long int a,  int b){
   return (int)(((a % b) + b) % b);
 }
 
 
 //For the square matrix only
-void stringProcessing(string str, long** result){
+void stringProcessing(string str,  long long int** result){
 	int strsize = str.size(); int num_el = 0,temp=0;
 	int mat_size=0;
 
@@ -154,7 +154,7 @@ void stringProcessing(string str, long** result){
 	}
 	
 	for (int i = 0; i<num_el;++i){
-		result[i/mat_size][i%mat_size] = stol(string_arr[i]);
+		result[i/mat_size][i%mat_size] = stoll(string_arr[i]);
 	}
 	
 	delete[] string_arr;
@@ -162,7 +162,7 @@ void stringProcessing(string str, long** result){
 }
 
 
-void specialMatrixMultiply(long** mat1, long** mat2, long** result, int V, int n){
+void specialMatrixMultiply( long long int** mat1,  long long int** mat2,  long long int** result, int V, int n){
 	int i,j,k;
 	
 	for (i = 0; i < n;++i){
@@ -199,19 +199,19 @@ int calculateNoOfWaitingDays(const string input7Str, const string input7Matrix[]
 	
 	if (N7==0) return 0;
 	
-	long** mat1 = new long* [N7];
+	 long long int** mat1 = new  long long int* [N7];
 	for (int i = 0; i < N7;++i){
-	    mat1[i] = new long[N7];
+	    mat1[i] = new  long long int[N7];
 	} 
 	
-	long** mat2 = new long* [N7];
+	 long long int** mat2 = new  long long int* [N7];
 	for (int i = 0; i < N7;++i){ 
-	    mat2[i] = new long[N7];
+	    mat2[i] = new  long long int[N7];
 	}
 	
-	long** mat3 = new long* [N7]; 
+	 long long int** mat3 = new  long long int* [N7]; 
 	for (int i = 0; i < N7;++i){ 
-	    mat3[i] = new long[N7];
+	    mat3[i] = new  long long int[N7];
 	}
 	
 	stringProcessing(input7Matrix[0],mat1);	
