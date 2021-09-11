@@ -1,1 +1,2 @@
 // First time using Git
+// Lecturer get me to do this in order to get used to Git before the whole Fundametal Programming course.
